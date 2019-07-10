@@ -8,9 +8,6 @@ const routes: Routes = [
   {
     path: 'list', component: ListComponent, canActivate: [AuthGuard]
   },
-  // {
-  //   path: '', redirectTo: 'list', pathMatch: 'full'
-  // },
   {
     path: '', component: UserProfileComponent
   },

@@ -1,6 +1,3 @@
-<div *ngIf="auth.user$ | async; then authenticated else guest">
-</div>
-
 <ng-template #guest>
 
   <button class="connectGoogle" mat-raised-button color="primary" (click)="auth.googleSignin()">
