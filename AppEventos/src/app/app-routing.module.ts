@@ -6,14 +6,14 @@ import { UserProfileComponent } from './login/users/user-profile/user-profile.co
 
 const routes: Routes = [
   {
-    path: 'list', component: ListComponent, //canActivate: [AuthGuard]
-  },
-  {
-    path: '', redirectTo: 'list', pathMatch: 'full'
+    path: 'list', component: ListComponent, canActivate: [AuthGuard]
   },
   // {
-  //   path: '', component: UserProfileComponent
+  //   path: '', redirectTo: 'list', pathMatch: 'full'
   // },
+  {
+    path: '', component: UserProfileComponent
+  },
 ];
 
 @NgModule({

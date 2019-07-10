@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatDialog } from '@angular/material';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { CreateComponent } from '../create/create.component';
 import { Guest } from '../models/guest';
 import { GuestService } from '../service/guest.service';
 import { EditComponent } from '../edit/edit.component';
 import { InformationComponent } from '../information/information.component';
-
+import { AuthService } from '../../login/core/auth.service';
+import { User } from '../../login/model/user';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -16,15 +17,19 @@ import { InformationComponent } from '../information/information.component';
 export class ListComponent implements OnInit {
 
   displayedColumns: string[] = ['fullName', 'acciones'];
-  dataGuests : MatTableDataSource<Guest>;
+  dataGuests: MatTableDataSource<Guest>;
   guestsList: Guest[];
   countGuest: number;
+  userData: User;
+  canDelete: boolean = false;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  constructor(public dialogResult: MatDialog, private guestService: GuestService) {
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  constructor(public dialogResult: MatDialog, private guestService: GuestService, public auth: AuthService) {
   }
 
   ngOnInit() {
+    this.getUser();
     this.guestService.getGuests()
       .snapshotChanges()
       .subscribe(item => {
@@ -41,23 +46,35 @@ export class ListComponent implements OnInit {
       });
   }
 
+  getUser() {
+    this.auth.user$.subscribe((res: User) => {
+      if (res.uid === 'YOADpaZgpeWvI2dp8qX67xSwldq2') {
+        this.canDelete = true;
+      } else {
+        this.canDelete = false;
+      }
+      this.userData = res;
+    })
+  }
+
   applyFilter(filterValue: string) {
     this.dataGuests.filter = filterValue.trim().toLowerCase();
   }
 
   openCreateGuest() {
+    this.getUser();
     let dialogRef = this.dialogResult.open(CreateComponent, {
       width: '500px',
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result != undefined){
+      if (result != undefined) {
         this.dataGuests.data.push(result);
       }
     });
   }
 
   deleteGuest(guest: Guest) {
-    if(confirm('Estas seguro que quieres eliminar al invitado: '+guest.fullName)) {
+    if (confirm('Estas seguro que quieres eliminar al invitado: ' + guest.fullName)) {
       this.guestService.deleteGuest(guest.$key);
     }
   }
@@ -65,14 +82,14 @@ export class ListComponent implements OnInit {
   editGuest(guest: Guest) {
     this.dialogResult.open(EditComponent, {
       width: '500px',
-      data : guest
+      data: guest
     });
   }
 
-  showMoreInformation () {
+  showMoreInformation() {
     this.dialogResult.open(InformationComponent, {
       width: '500px',
-      data : this.countGuest
+      data: this.countGuest
     });
   }
 

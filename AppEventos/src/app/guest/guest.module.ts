@@ -24,7 +24,7 @@ import { InformationComponent } from './information/information.component';
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [
-    GuestService
+    GuestService,
   ],
   entryComponents: [
     CreateComponent,
