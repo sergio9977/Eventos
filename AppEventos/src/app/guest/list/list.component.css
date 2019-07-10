@@ -1,0 +1,29 @@
+/* Structure */
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.table-contend {
+  padding: 0 20px;
+}
+
+.button-guest {
+  padding: 20px 0;
+}
+
+.size {
+  width: 55%;
+}
+
+.size-cciones {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.button-header {
+  margin-right: 10px;
+}
